@@ -16,7 +16,7 @@ module ArgsParser
     end
 
     def arg(name, opts={})
-      params[name][:description] = opts[:description]
+      params[name][:note] = opts[:note]
       params[name][:value] = opts[:default] unless params[name][:value]
       aliases[opts[:alias]] = name if opts[:alias]
     end
@@ -82,7 +82,7 @@ module ArgsParser
 
     private
     def params
-      @params ||= Hash.new{|h,k| h[k] = {:description => nil, :value => nil}}
+      @params ||= Hash.new{|h,k| h[k] = {:note => nil, :value => nil}}
     end
 
     def aliases
