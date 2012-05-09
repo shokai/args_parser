@@ -5,6 +5,8 @@ module ArgsParser
   end
 
   class Parser
+    attr_reader :first
+
     def initialize(argv=[], &block)
       unless block_given?
         raise ArgumentError, 'initialize block was not given'
@@ -25,11 +27,13 @@ module ArgsParser
 
     def parse(argv)
       k = nil
-      argv.each do |arg|
+      argv.each_with_index do |arg, index|
         unless k
           if arg =~ /^-+[^-\s]+$/
             k = arg.scan(/^-+([^-\s]+)$/)[0][0].strip.to_sym
             k = aliases[k]  if aliases[k]
+          elsif index == 0
+            @first = arg
           end
         else
           if arg =~ /^-+[^-\s]+$/
