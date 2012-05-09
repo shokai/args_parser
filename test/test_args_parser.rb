@@ -4,9 +4,9 @@ class TestArgsParser < Test::Unit::TestCase
   def setup
     @argv = 'test --input ~/tmp -a --o ./out -h'.split(/\s+/)
     @parser = ArgsParser.parse @argv do
-      arg :input, :alias => :i, :note => 'input dir'
-      arg :output, :alias => :o, :note => 'output dir'
-      arg :help, :alias => :h, :note => 'show help'
+      arg :input, 'input dir', :alias => :i
+      arg :output, 'output dir', :alias => :o
+      arg :help, 'show help', :alias => :h
     end
   end
 

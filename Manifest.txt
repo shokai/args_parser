@@ -4,6 +4,7 @@ README.rdoc
 Rakefile
 lib/args_parser.rb
 lib/args_parser/parser.rb
+samples/download_webpage.rb
 script/console
 script/destroy
 script/generate

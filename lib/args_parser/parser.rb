@@ -7,6 +7,26 @@ module ArgsParser
   class Parser
     attr_reader :first
 
+
+    private
+    def params
+      @params ||=
+        Hash.new{|h,k|
+        h[k] = {
+          :default => nil,
+          :description => nil,
+          :value => nil,
+          :alias => nil,
+          :index => -1
+        }
+      }
+    end
+
+    def aliases
+      @aliases ||= Hash.new
+    end
+
+    public
     def initialize(argv=[], &block)
       unless block_given?
         raise ArgumentError, 'initialize block was not given'
@@ -15,9 +35,11 @@ module ArgsParser
       parse argv
     end
 
-    def arg(name, opts={})
-      params[name][:note] = opts[:note]
-      params[name][:value] = opts[:default] unless params[name][:value]
+    def arg(name, description, opts={})
+      params[name][:default] = opts[:default]
+      params[name][:description] = description
+      params[name][:index] = params.keys.size
+      params[name][:alias] = opts[:alias]
       aliases[opts[:alias]] = name if opts[:alias]
     end
 
@@ -52,7 +74,7 @@ module ArgsParser
     end
 
     def [](key)
-      params[key][:value]
+      params[key][:value] || params[key][:default]
     end
 
     def []=(key, value)
@@ -61,13 +83,13 @@ module ArgsParser
 
     def has_option?(*opt)
       !(opt.flatten.map{|i|
-          params[i][:value] == true
+          self[i] == true
         }.include? false)
     end
 
     def has_param?(*param_)
       !(param_.flatten.map{|i|
-          v = params[i][:value]
+          v = self[i]
           (v and v.kind_of? String) ? true : false
         }.include? false)
     end
@@ -80,13 +102,32 @@ module ArgsParser
       h.inspect
     end
 
-    private
-    def params
-      @params ||= Hash.new{|h,k| h[k] = {:note => nil, :value => nil}}
-    end
+    def help
+      params_ = Array.new
+      params.each do |k,v|
+        v[:name] = k
+        params_ << v
+      end
+      params_ = params_.delete_if{|i|
+        i[:index] < 0
+      }.sort{|a,b|
+        a[:index] <=> b[:index]
+      }
 
-    def aliases
-      @aliases ||= Hash.new
+      len = params_.map{|i|
+        line = " -#{i[:name]}"
+        line += " (-#{i[:alias]})" if i[:alias]
+        line.size
+      }.max
+
+      "options:\n" + params_.map{|i|
+        line = " -#{i[:name]}"
+        line += " (-#{i[:alias]})" if i[:alias]
+        line = line.ljust(len+2)
+        line += i[:description].to_s
+        line += " : default - #{i[:default]}" if i[:default]
+        line
+      }.join("\n")
     end
 
   end

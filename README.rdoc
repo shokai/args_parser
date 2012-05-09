@@ -4,15 +4,41 @@
 
 == DESCRIPTION:
 
-ARGV parser.
+ARGV parser - Parse args from command line. 
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  % ruby sample.rb -url http://example.com -o out.html
+
+parse ARGV
+
+  require 'rubygems'
+  require 'args_parser'
+  
+  parser = ArgsParser.parse ARGV do
+    arg :url, 'URL', :alias => :u
+    arg :output, 'output file', :alias => :o, :default => 'out.html'
+    arg :verbose, 'verbose mode'
+    arg :help, 'show help', :alias => :h
+  end
+  
+  if parser.has_option? :help or !parser.has_param?(:url, :output)
+    STDERR.puts parser.help
+    exit 1
+  end
+  
+  require 'open-uri'
+  puts 'download..' if parser[:verbose]
+  open(parser[:output], 'w+') do |f|
+    f.write open(parser[:url]).read
+  end
+  puts "saved! => #{parser[:output]}"
+
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* Ruby 1.8.7+
+* Ruby 1.9.3+
 
 == INSTALL:
 
