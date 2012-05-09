@@ -42,6 +42,9 @@ module ArgsParser
           end
         end
       end
+      if k
+        params[k][:value] = true
+      end
     end
 
     def [](key)
