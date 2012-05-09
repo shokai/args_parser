@@ -1,0 +1,29 @@
+require File.dirname(__FILE__) + '/test_helper.rb'
+
+class TestArgsParser < Test::Unit::TestCase
+
+  def setup
+    @argv = '--input ~/tmp -a --o ./out -h'.split(/\s+/)
+    @parser = ArgsParser.parse @argv do
+      arg :input, :alias => :i, :note => 'input dir'
+      arg :output, :alias => :o, :note => 'output dir'
+      arg :help, :alias => :h, :note => 'show help'
+    end
+  end
+
+  def test_arg
+    assert @parser[:input] == '~/tmp'
+  end
+
+  def test_alias
+    assert @parser[:output] == './out'
+  end
+
+  def test_missing_arg
+    assert @parser[:a] == true
+  end
+
+  def test_switch
+    assert @parser[:help] == true
+  end
+end
