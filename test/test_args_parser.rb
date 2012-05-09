@@ -1,14 +1,17 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestArgsParser < Test::Unit::TestCase
-
   def setup
-    @argv = '--input ~/tmp -a --o ./out -h'.split(/\s+/)
+    @argv = 'test --input ~/tmp -a --o ./out -h'.split(/\s+/)
     @parser = ArgsParser.parse @argv do
       arg :input, :alias => :i, :note => 'input dir'
       arg :output, :alias => :o, :note => 'output dir'
       arg :help, :alias => :h, :note => 'show help'
     end
+  end
+
+  def test_first
+    assert @parser.first == 'test'
   end
 
   def test_arg
