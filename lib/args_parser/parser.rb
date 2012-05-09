@@ -59,16 +59,17 @@ module ArgsParser
       params[key][:value] = value
     end
 
-    def has_option(*opt)
+    def has_option?(*opt)
       !(opt.flatten.map{|i|
-        params[i][:value] and [true, false, nil].include? params[i][:value]
-      }.include? false)
+          params[i][:value] == true
+        }.include? false)
     end
 
-    def has_param(*param_)
+    def has_param?(*param_)
       !(param_.flatten.map{|i|
-        params[i][:value] and ![true, false, nil].include? params[i][:value]
-      }.include? false)
+          v = params[i][:value]
+          (v and v.kind_of? String) ? true : false
+        }.include? false)
     end
 
     def inspect

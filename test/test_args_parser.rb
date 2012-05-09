@@ -30,19 +30,27 @@ class TestArgsParser < Test::Unit::TestCase
     assert @parser[:help] == true
   end
 
-  def test_has_param
-    assert (@parser.has_param :input and @parser.has_param :output)
+  def test_has_param?
+    assert (@parser.has_param? :input and @parser.has_param? :output)
   end
 
-  def test_has_params
-    assert @parser.has_param [:input, :output]
+  def test_has_params?
+    assert @parser.has_param? :input, :output
   end
 
-  def test_has_option
-    assert (@parser.has_option :help and @parser.has_option :a)
+  def test_has_not_param?
+    assert !@parser.has_param?(:a)
   end
 
-  def test_has_options
-    assert @parser.has_option [:help, :a]
+  def test_has_option?
+    assert (@parser.has_option? :help and @parser.has_option? :a)
+  end
+
+  def test_has_options?
+    assert @parser.has_option? :help, :a
+  end
+
+  def test_has_not_option?
+    assert !@parser.has_option?(:b)
   end
 end
