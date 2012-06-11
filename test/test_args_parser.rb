@@ -31,7 +31,8 @@ class TestArgsParser < Test::Unit::TestCase
   end
 
   def test_has_param?
-    assert (@parser.has_param? :input and @parser.has_param? :output)
+    assert @parser.has_param? :input
+    assert @parser.has_param? :output
   end
 
   def test_has_params?
@@ -43,7 +44,8 @@ class TestArgsParser < Test::Unit::TestCase
   end
 
   def test_has_option?
-    assert (@parser.has_option? :help and @parser.has_option? :a)
+    assert @parser.has_option? :help 
+    assert @parser.has_option? :a
   end
 
   def test_has_options?
