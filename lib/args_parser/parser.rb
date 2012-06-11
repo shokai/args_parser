@@ -31,7 +31,7 @@ module ArgsParser
       unless block_given?
         raise ArgumentError, 'initialize block was not given'
       end
-      instance_eval &block
+      instance_eval(&block)
       parse argv
     end
 
