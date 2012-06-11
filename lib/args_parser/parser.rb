@@ -7,7 +7,6 @@ module ArgsParser
   class Parser
     attr_reader :first
 
-
     private
     def params
       @params ||=
