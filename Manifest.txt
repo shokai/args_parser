@@ -1,3 +1,5 @@
+Gemfile
+Gemfile.lock
 History.txt
 Manifest.txt
 README.rdoc
