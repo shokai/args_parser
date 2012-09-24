@@ -4,7 +4,7 @@ require 'rubygems'
 require 'args_parser'
 
 parser = ArgsParser.parse ARGV do
-  arg :url, 'URL', :alias => :u
+  arg :url, 'URL', :alias => :u, :required => true
   arg :output, 'output file', :alias => :o, :default => 'out.html'
   arg :verbose, 'verbose mode'
   arg :help, 'show help', :alias => :h

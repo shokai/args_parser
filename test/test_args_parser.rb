@@ -4,7 +4,7 @@ class TestArgsParser < Test::Unit::TestCase
   def setup
     @argv = 'test --input http://shokai.org -a --o ./out  --depth 030 --pi 3.14 --n ShoKaI -h'.split(/\s+/)
     @parser = ArgsParser.parse @argv do
-      arg :input, 'input', :alias => :i
+      arg :input, 'input', :alias => :i, :required => true
       arg :output, 'output dir', :alias => :o
       arg :name, 'user name', :alias => :n
       arg :help, 'show help', :alias => :h

@@ -18,6 +18,7 @@ module ArgsParser
           :description => nil,
           :value => nil,
           :alias => nil,
+          :required => false,
           :index => -1
         }
       }
@@ -48,6 +49,7 @@ module ArgsParser
       params[name][:description] = description
       params[name][:index] = params.keys.size
       params[name][:alias] = opts[:alias]
+      params[name][:required] = opts[:required]
       aliases[opts[:alias]] = name if opts[:alias]
     end
 
@@ -96,6 +98,12 @@ module ArgsParser
       end
       if k
         params[k][:value] = true
+      end
+      params.each do |name, param|
+        if param[:required] and [nil, true].include? param[:value]
+          STDERR.puts "Argument \"#{name}\" required."
+          exit 1
+        end
       end
     end
 
