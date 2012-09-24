@@ -1,7 +1,9 @@
 
 module ArgsParser
   def self.parse(argv=[], &block)
-    Parser.new(argv, &block)
+    parser = Parser.new(&block)
+    parser.parse argv
+    parser
   end
 
   class Parser
@@ -26,12 +28,18 @@ module ArgsParser
     end
 
     public
-    def initialize(argv=[], &block)
+    def initialize(&block)
       unless block_given?
         raise ArgumentError, 'initialize block was not given'
       end
+      @filter = Filter.new
       instance_eval(&block)
-      parse argv
+      filter do |v|
+        (v.kind_of? String and v =~ /^\d+$/) ? v.to_i : v
+      end
+      filter do |v|
+        (v.kind_of? String and v =~ /^\d+\.\d+$/) ? v.to_f : v
+      end
     end
 
     def arg(name, description, opts={})
@@ -40,6 +48,12 @@ module ArgsParser
       params[name][:index] = params.keys.size
       params[name][:alias] = opts[:alias]
       aliases[opts[:alias]] = name if opts[:alias]
+    end
+
+    def filter(name=nil, &block)
+      if block_given?
+        @filter.add name, block
+      end
     end
 
     def args
@@ -62,8 +76,7 @@ module ArgsParser
             k = arg.scan(/^-+([^-\s]+)$/)[0][0].strip.to_sym
             k = aliases[k]  if aliases[k]
           else
-            arg = arg.to_i if arg =~ /^\d+$/
-            arg = arg.to_f if arg =~ /^\d+\.\d+$/
+            arg = @filter.filter k, arg
             params[k][:value] = arg
             k = nil
           end

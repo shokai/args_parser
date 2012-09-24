@@ -6,6 +6,7 @@ README.rdoc
 Rakefile
 lib/args_parser.rb
 lib/args_parser/parser.rb
+lib/args_parser/filter.rb
 samples/download_webpage.rb
 script/console
 script/destroy
