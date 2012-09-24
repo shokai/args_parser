@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestArgsParser < Test::Unit::TestCase
   def setup
-    @argv = 'test --input ~/tmp -a --o ./out -h'.split(/\s+/)
+    @argv = 'test --input ~/tmp -a --o ./out -h --depth 030 --pi 3.14'.split(/\s+/)
     @parser = ArgsParser.parse @argv do
       arg :input, 'input dir', :alias => :i
       arg :output, 'output dir', :alias => :o
@@ -22,8 +22,18 @@ class TestArgsParser < Test::Unit::TestCase
     assert @parser[:output] == './out'
   end
 
+  def test_cast_integer
+    assert @parser[:depth] == 30
+    assert @parser[:depth].class == Fixnum
+  end
+
+  def test_cast_float
+    assert @parser[:pi] == 3.14
+    assert @parser[:pi].class == Float
+  end
+
   def test_missing_arg
-    assert @parser[:a] == true
+    assert @parser[:b] != true
   end
 
   def test_switch
@@ -33,10 +43,12 @@ class TestArgsParser < Test::Unit::TestCase
   def test_has_param?
     assert @parser.has_param? :input
     assert @parser.has_param? :output
+    assert @parser.has_param? :depth
+    assert @parser.has_param? :pi
   end
 
   def test_has_params?
-    assert @parser.has_param? :input, :output
+    assert @parser.has_param? :input, :output, :depth, :pi
   end
 
   def test_has_not_param?
