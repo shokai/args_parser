@@ -1,13 +1,21 @@
 #!/usr/bin/env ruby
+$:.unshift File.expand_path '../lib', File.dirname(__FILE__)
 require 'rubygems'
 require 'args_parser'
-## require File.dirname(__FILE__)+'/../lib/args_parser'
 
 parser = ArgsParser.parse ARGV do
   arg :url, 'URL', :alias => :u
   arg :output, 'output file', :alias => :o, :default => 'out.html'
   arg :verbose, 'verbose mode'
   arg :help, 'show help', :alias => :h
+
+  filter :url do |v|
+    v.strip
+  end
+
+  validate :url, "invalid URL" do |v|
+    v =~ /^https?:\/\/.+$/
+  end
 end
 
 if parser.has_option? :help or !parser.has_param?(:url, :output)

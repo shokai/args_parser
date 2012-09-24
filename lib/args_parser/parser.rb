@@ -33,6 +33,7 @@ module ArgsParser
         raise ArgumentError, 'initialize block was not given'
       end
       @filter = Filter.new
+      @validator = Validator.new
       instance_eval(&block)
       filter do |v|
         (v.kind_of? String and v =~ /^\d+$/) ? v.to_i : v
@@ -53,6 +54,12 @@ module ArgsParser
     def filter(name=nil, &block)
       if block_given?
         @filter.add name, block
+      end
+    end
+
+    def validate(name, message, &block)
+      if block_given?
+        @validator.add name, message, block
       end
     end
 
@@ -77,6 +84,11 @@ module ArgsParser
             k = aliases[k]  if aliases[k]
           else
             arg = @filter.filter k, arg
+            msg = @validator.validate k, arg
+            if msg
+              STDERR.puts "Error: #{msg} (--#{k} #{arg})"
+              exit 1
+            end
             params[k][:value] = arg
             k = nil
           end
