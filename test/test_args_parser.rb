@@ -2,15 +2,19 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestArgsParser < Test::Unit::TestCase
   def setup
-    @argv = 'test --input ~/tmp -a --o ./out -h --depth 030 --pi 3.14 --n ShoKaI'.split(/\s+/)
+    @argv = 'test --input http://shokai.org -a --o ./out -h --depth 030 --pi 3.14 --n ShoKaI'.split(/\s+/)
     @parser = ArgsParser.parse @argv do
-      arg :input, 'input dir', :alias => :i
+      arg :input, 'input', :alias => :i
       arg :output, 'output dir', :alias => :o
       arg :name, 'user name', :alias => :n
       arg :help, 'show help', :alias => :h
 
       filter :name do |v|
         v.downcase
+      end
+
+      validate :input, "input must be valid URL" do |v|
+        v =~ /^https?:\/\/.+/
       end
     end
   end
@@ -20,7 +24,7 @@ class TestArgsParser < Test::Unit::TestCase
   end
 
   def test_arg
-    assert @parser[:input] == '~/tmp'
+    assert @parser[:input] == 'http://shokai.org'
   end
 
   def test_alias
