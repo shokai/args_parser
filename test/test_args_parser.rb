@@ -2,11 +2,16 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestArgsParser < Test::Unit::TestCase
   def setup
-    @argv = 'test --input ~/tmp -a --o ./out -h --depth 030 --pi 3.14'.split(/\s+/)
+    @argv = 'test --input ~/tmp -a --o ./out -h --depth 030 --pi 3.14 --n ShoKaI'.split(/\s+/)
     @parser = ArgsParser.parse @argv do
       arg :input, 'input dir', :alias => :i
       arg :output, 'output dir', :alias => :o
+      arg :name, 'user name', :alias => :n
       arg :help, 'show help', :alias => :h
+
+      filter :name do |v|
+        v.downcase
+      end
     end
   end
 
@@ -32,6 +37,10 @@ class TestArgsParser < Test::Unit::TestCase
     assert @parser[:pi].class == Float
   end
 
+  def test_filter
+    assert @parser[:name] == 'shokai'
+  end
+
   def test_missing_arg
     assert @parser[:b] != true
   end
@@ -45,10 +54,11 @@ class TestArgsParser < Test::Unit::TestCase
     assert @parser.has_param? :output
     assert @parser.has_param? :depth
     assert @parser.has_param? :pi
+    assert @parser.has_param? :name
   end
 
   def test_has_params?
-    assert @parser.has_param? :input, :output, :depth, :pi
+    assert @parser.has_param? :input, :output, :depth, :pi, :name
   end
 
   def test_has_not_param?
