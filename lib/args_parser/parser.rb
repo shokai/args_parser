@@ -62,6 +62,8 @@ module ArgsParser
             k = arg.scan(/^-+([^-\s]+)$/)[0][0].strip.to_sym
             k = aliases[k]  if aliases[k]
           else
+            arg = arg.to_i if arg =~ /^\d+$/
+            arg = arg.to_f if arg =~ /^\d+\.\d+$/
             params[k][:value] = arg
             k = nil
           end
@@ -89,7 +91,7 @@ module ArgsParser
     def has_param?(*param_)
       !(param_.flatten.map{|i|
           v = self[i]
-          (v and v.kind_of? String) ? true : false
+          (v and [String, Fixnum, Float].include? v.class) ? true : false
         }.include? false)
     end
 
