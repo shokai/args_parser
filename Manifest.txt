@@ -7,6 +7,7 @@ Rakefile
 lib/args_parser.rb
 lib/args_parser/parser.rb
 lib/args_parser/filter.rb
+lib/args_parser/validator.rb
 samples/download_webpage.rb
 script/console
 script/destroy

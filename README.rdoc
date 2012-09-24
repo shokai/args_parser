@@ -8,7 +8,7 @@ ARGV parser - Parse args from command line.
 
 == SYNOPSIS:
 
-  % ruby sample.rb -url http://example.com -o out.html
+  % ruby samples/download_webpage.rb -url http://example.com -o out.html
 
 parse ARGV
 
