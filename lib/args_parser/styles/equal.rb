@@ -3,6 +3,11 @@ module ArgsParser
   class Parser
 
     def parse_style_equal(argv)
+      on_validate_error do |err, name, value|
+        STDERR.puts "Error: #{err.message} (--#{name}=#{value})"
+        exit 1
+      end
+
       is_option = /^-+([^-=\s]+)$/
       is_param = /^-+([^-=\s]+)=([^=\s]+)$/
       argv.each_with_index do |arg, i|

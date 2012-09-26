@@ -35,13 +35,22 @@ module ArgsParser
       @aliases = {}
       @filter = Filter.new
       @validator = Validator.new
-      instance_eval(&block)
+
       filter do |v|
         (v.kind_of? String and v =~ /^\d+$/) ? v.to_i : v
       end
       filter do |v|
         (v.kind_of? String and v =~ /^\d+\.\d+$/) ? v.to_f : v
       end
+      on_filter_error do |err, name, value|
+        raise err
+      end
+      on_validate_error do |err, name, value|
+        STDERR.puts "Error: #{err.message} (--#{name} #{value})"
+        exit 1
+      end
+
+      instance_eval(&block)
     end
 
     def arg(name, description, opts={})
@@ -62,13 +71,21 @@ module ArgsParser
       if block_given?
         @on_filter_error = block
       else
-        @on_filter_error.call(err, name, value)
+        @on_filter_error.call(err, name, value) if @on_filter_error
       end
     end
 
     def validate(name, message, &block)
       if block_given?
         @validator.add name, message, block
+      end
+    end
+
+    def on_validate_error(err=nil, name=nil, value=nil, &block)
+      if block_given?
+        @on_validate_error = block
+      else
+        @on_validate_error.call(err, name, value) if @on_validate_error
       end
     end
 
@@ -85,10 +102,13 @@ module ArgsParser
         rescue => e
           on_filter_error e, name, param[:value]
         end
-        msg = @validator.validate name, param[:value]
+        begin
+          msg = @validator.validate name, param[:value]
+        rescue => e
+          on_validate_error e, name, param[:value]
+        end
         if msg
-          STDERR.puts "Error: #{msg} (--#{name} #{param[:value]})"
-          exit 1
+          on_validate_error ValidationError.new(msg), name, param[:value]
         end
       end
     end
