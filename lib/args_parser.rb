@@ -9,5 +9,5 @@ require 'args_parser/validator'
 require 'args_parser/config'
 
 module ArgsParser
-  VERSION = '0.0.5'
+  VERSION = '0.0.6'
 end

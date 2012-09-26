@@ -1,3 +1,7 @@
+=== 0.0.6 2012-09-26
+
+* add equal style parser
+
 === 0.0.5 2012-09-24
 
 * add filter and validator

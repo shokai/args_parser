@@ -5,12 +5,17 @@ Manifest.txt
 README.rdoc
 Rakefile
 lib/args_parser.rb
+lib/args_parser/config.rb
 lib/args_parser/parser.rb
 lib/args_parser/filter.rb
+lib/args_parser/styles/default.rb
+lib/args_parser/styles/equal.rb
 lib/args_parser/validator.rb
 samples/download_webpage.rb
+samples/twitter_timeline.rb
 script/console
 script/destroy
 script/generate
 test/test_args_parser.rb
+test/test_args_parser_style_equal.rb
 test/test_helper.rb
