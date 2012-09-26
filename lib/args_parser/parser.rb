@@ -58,6 +58,14 @@ module ArgsParser
       end
     end
 
+    def on_filter_error(err=nil, name=nil, value=nil, &block)
+      if block_given?
+        @on_filter_error = block
+      else
+        @on_filter_error.call(err, name, value)
+      end
+    end
+
     def validate(name, message, &block)
       if block_given?
         @validator.add name, message, block
@@ -72,7 +80,11 @@ module ArgsParser
       method("parse_style_#{@config[:style]}".to_sym).call(argv)
       params.each do |name, param|
         next if [nil, true].include? param[:value]
-        param[:value] = @filter.filter name, param[:value]
+        begin
+          param[:value] = @filter.filter name, param[:value]
+        rescue => e
+          on_filter_error e, name, param[:value]
+        end
         msg = @validator.validate name, param[:value]
         if msg
           STDERR.puts "Error: #{msg} (--#{name} #{param[:value]})"
