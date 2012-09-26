@@ -83,12 +83,6 @@ module ArgsParser
             k = arg.scan(/^-+([^-\s]+)$/)[0][0].strip.to_sym
             k = aliases[k]  if aliases[k]
           else
-            arg = @filter.filter k, arg
-            msg = @validator.validate k, arg
-            if msg
-              STDERR.puts "Error: #{msg} (--#{k} #{arg})"
-              exit 1
-            end
             params[k][:value] = arg
             k = nil
           end
@@ -96,6 +90,16 @@ module ArgsParser
       end
       if k
         params[k][:value] = true
+      end
+
+      params.each do |name, param|
+        next if [nil, true].include? param[:value]
+        param[:value] = @filter.filter name, param[:value]
+        msg = @validator.validate name, param[:value]
+        if msg
+          STDERR.puts "Error: #{msg} (--#{name} #{param[:value]})"
+          exit 1
+        end
       end
     end
 
