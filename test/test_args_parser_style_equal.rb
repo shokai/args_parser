@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestArgsParserStyleEqual < Test::Unit::TestCase
   def setup
-    @argv = 'test --input=http://shokai.org --a --o=./out -h --depth=030 --pi=3.14 --n=ShoKaI'.split(/\s+/)
+    @argv = 'test --input=http://shokai.org --a --o=./out -h --depth=030 foo bar --pi=3.14 --n=ShoKaI'.split(/\s+/)
     @parser = ArgsParser.parse @argv, :style => :equal do
       arg :input, 'input', :alias => :i
       arg :output, 'output dir', :alias => :o
@@ -21,6 +21,10 @@ class TestArgsParserStyleEqual < Test::Unit::TestCase
 
   def test_first
     assert @parser.first == 'test'
+  end
+
+  def test_argv
+    assert @parser.argv == ['test', 'foo', 'bar']
   end
 
   def test_arg

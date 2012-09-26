@@ -10,12 +10,20 @@ module ArgsParser
   end
 
   class Parser
-    attr_reader :first
+    attr_reader :argv, :params, :aliases
 
-    private
-    def params
-      @params ||=
-        Hash.new{|h,k|
+    public
+    def first
+      argv.first
+    end
+
+    def initialize(config, &block)
+      unless block_given?
+        raise ArgumentError, 'initialize block was not given'
+      end
+      @config = config
+      @argv = []
+      @params = Hash.new{|h,k|
         h[k] = {
           :default => nil,
           :description => nil,
@@ -24,18 +32,7 @@ module ArgsParser
           :index => -1
         }
       }
-    end
-
-    def aliases
-      @aliases ||= Hash.new
-    end
-
-    public
-    def initialize(config, &block)
-      @config = config
-      unless block_given?
-        raise ArgumentError, 'initialize block was not given'
-      end
+      @aliases = {}
       @filter = Filter.new
       @validator = Validator.new
       instance_eval(&block)
