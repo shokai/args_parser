@@ -1,7 +1,10 @@
 
 module ArgsParser
-  def self.parse(argv=[], &block)
-    parser = Parser.new(&block)
+  def self.parse(argv=[], config={}, &block)
+    Config.default.each do |k,v|
+      config[k] = v unless config[k]
+    end
+    parser = Parser.new(config, &block)
     parser.parse argv
     parser
   end
@@ -28,7 +31,8 @@ module ArgsParser
     end
 
     public
-    def initialize(&block)
+    def initialize(config, &block)
+      @config = config
       unless block_given?
         raise ArgumentError, 'initialize block was not given'
       end
@@ -68,30 +72,7 @@ module ArgsParser
     end
 
     def parse(argv)
-      k = nil
-      argv.each_with_index do |arg, index|
-        unless k
-          if arg =~ /^-+[^-\s]+$/
-            k = arg.scan(/^-+([^-\s]+)$/)[0][0].strip.to_sym
-            k = aliases[k]  if aliases[k]
-          elsif index == 0
-            @first = arg
-          end
-        else
-          if arg =~ /^-+[^-\s]+$/
-            params[k][:value] = true
-            k = arg.scan(/^-+([^-\s]+)$/)[0][0].strip.to_sym
-            k = aliases[k]  if aliases[k]
-          else
-            params[k][:value] = arg
-            k = nil
-          end
-        end
-      end
-      if k
-        params[k][:value] = true
-      end
-
+      method("parse_style_#{@config[:style]}".to_sym).call(argv)
       params.each do |name, param|
         next if [nil, true].include? param[:value]
         param[:value] = @filter.filter name, param[:value]
