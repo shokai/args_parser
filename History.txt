@@ -1,3 +1,7 @@
+=== 0.0.8 2012-09-27
+
+* validator and filter tested
+
 === 0.0.7 2012-09-26
 
 * add function ArgsParser#argv
