@@ -43,6 +43,17 @@ parse ARGV
   puts "saved! => #{parser[:output]}"
 
 
+equal style
+
+  % ruby samples/twitter_timeline.rb --user=shokai --fav --rt
+
+parse equal style ARGV
+
+  parser = ArgsParser.parse ARGV, :style => :equal do
+
+see more [samples](https://github.com/shokai/args_parser/tree/master/samples)
+
+
 == REQUIREMENTS:
 
 * Ruby 1.8.7+
