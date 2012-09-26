@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+## sample app
+
 $:.unshift File.expand_path '../lib', File.dirname(__FILE__)
 require 'rubygems'
 require 'args_parser'
