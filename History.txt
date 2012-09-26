@@ -1,3 +1,7 @@
+=== 0.0.7 2012-09-26
+
+* add function ArgsParser#argv
+
 === 0.0.6 2012-09-26
 
 * add equal style parser
