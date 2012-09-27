@@ -1,3 +1,7 @@
+=== 0.0.9 2012-09-27
+
+* github-pages URL in README
+
 === 0.0.8 2012-09-27
 
 * validator and filter tested
