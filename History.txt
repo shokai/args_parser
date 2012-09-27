@@ -1,3 +1,7 @@
+=== 0.1.0 2012-09-27
+
+* fix version error
+
 === 0.0.10 2012-09-27
 
 * bugfix default filter casting Integer/Float
