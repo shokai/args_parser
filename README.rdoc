@@ -1,10 +1,10 @@
 = args_parser
 
-* http://github.com/shokai/args_parser
+* http://shokai.github.com/args_parser
 
 == DESCRIPTION:
 
-ARGV parser - Parse args from command line. 
+Parse ARGV from command line with DSL.
 
 == SYNOPSIS:
 
