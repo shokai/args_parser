@@ -12,7 +12,7 @@ parser = ArgsParser.parse ARGV do
   arg :help, 'show help', :alias => :h
 
   filter :url do |v|
-    v.strip
+    v.to_s.strip
   end
 
   validate :url, "invalid URL" do |v|

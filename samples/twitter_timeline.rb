@@ -15,7 +15,7 @@ parser = ArgsParser.parse ARGV, :style => :equal do
   arg :help, 'show help', :alias => :h
 
   filter :user do |v|
-    v.strip
+    v.to_s.strip
   end
 
   validate :user, "invalid twitter screen_name" do |v|

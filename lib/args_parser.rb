@@ -4,10 +4,11 @@ $:.unshift(File.dirname(__FILE__)) unless
 require 'args_parser/parser'
 require 'args_parser/styles/default'
 require 'args_parser/styles/equal'
+require 'args_parser/error'
 require 'args_parser/filter'
 require 'args_parser/validator'
 require 'args_parser/config'
 
 module ArgsParser
-  VERSION = '0.0.7'
+  VERSION = '0.0.8'
 end

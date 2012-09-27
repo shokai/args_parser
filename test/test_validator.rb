@@ -1,0 +1,29 @@
+require File.dirname(__FILE__) + '/test_helper.rb'
+
+class TestArgsParserValidator < Test::Unit::TestCase
+  def setup
+    @argv = ['--url', 'hptt://shokai.org']
+    @@err = nil
+    @@name = nil
+    @@value = nil
+    @parser = ArgsParser.parse @argv do
+      arg :url, 'URL'
+
+      validate :url, 'invalid URL' do |v|
+        v =~ Regexp.new("^https?://.+$")
+      end
+      
+      on_validate_error do |err, name, value|
+        @@err = err
+        @@name = name
+        @@value = value
+      end
+    end
+  end
+
+  def test_validate_error
+    assert @@name == :url
+    assert @@value == 'hptt://shokai.org'
+    assert @@err.class == ArgsParser::ValidationError
+  end
+end
