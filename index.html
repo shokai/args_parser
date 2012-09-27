@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Args parser by shokai</title>
+    <title>args_parser for Ruby</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -16,7 +16,7 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1 class="header">Args parser</h1>
+        <h1 class="header">Args Parser</h1>
         <p class="header">Parse ARGV from command line with DSL.</p>
 
         <ul>
@@ -30,22 +30,12 @@
 
       </header>
       <section>
-        <h1>args_parser</h1>
+<h2>INSTALL:</h2>
 
-<ul>
-<li><a href="http://github.com/shokai/args_parser">http://github.com/shokai/args_parser</a></li>
-</ul>
-</ul><h2>INSTALL:</h2>
-
-<ul>
-<li>gem install args_parser</li>
-<h2>DESCRIPTION:</h2>
-
-<p>Parse ARGV from command line with DSL.</p>
-
+<pre><code>% gem install args_parser</code></pre>
 <h2>SYNOPSIS:</h2>
 
-<pre><code>% ruby samples/download_webpage.rb -url http://example.com -o out.html
+<pre><code>% ruby samples/download_webpage.rb --url http://example.com -o out.html
 </code></pre>
 
 <h3>parse ARGV</h3>
@@ -102,14 +92,14 @@
 </ul>
 <h2>TEST:</h2>
 
-<p>% bundle install
-  % rake</p>
+<pre><code>% bundle install
+% rake test</code></pre>
 
 <h2>LICENSE:</h2>
 
 <p>(The MIT License)</p>
 
-<p>Copyright (c) 2012 Sho Hashimoto</p>
+<p>Copyright (c) 2012 Sho Hashimoto &lt;hashimoto@shokai.org&gt;</p>
 
 <p>Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
