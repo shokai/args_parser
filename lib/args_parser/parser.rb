@@ -37,10 +37,10 @@ module ArgsParser
       @validator = Validator.new
 
       filter do |v|
-        (v.kind_of? String and v =~ /^\d+$/) ? v.to_i : v
+        (v.kind_of? String and v =~ /^-?\d+$/) ? v.to_i : v
       end
       filter do |v|
-        (v.kind_of? String and v =~ /^\d+\.\d+$/) ? v.to_f : v
+        (v.kind_of? String and v =~ /^-?\d+\.\d+$/) ? v.to_f : v
       end
       on_filter_error do |err, name, value|
         raise err
