@@ -9,7 +9,7 @@ module ArgsParser
       end
 
       is_option = /^-+([^-=\s]+)$/
-      is_param = /^-+([^-=\s]+)=([^=\s]+)$/
+      is_param = /^-+([^-=\s]+)=(.+)$/
       argv.each_with_index do |arg, i|
         if arg =~ is_option
           k,v = [arg.scan(is_option)[0][0], true]
