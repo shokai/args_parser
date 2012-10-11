@@ -2,19 +2,23 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestArgsParser < Test::Unit::TestCase
   def setup
-    @argv = 'test --input http://shokai.org -a --o ./out -h --depth 030 foo bar --pi 3.14 --n ShoKaI'.split(/\s+/)
+    @argv = 'test --input http://shokai.org -a --o ./out -h --depth 030 foo bar --pi 3.14 --n ShoKaI --yakiniku KaZusuKe'.split(/\s+/)
     @parser = ArgsParser.parse @argv do
       arg :input, 'input', :alias => :i
       arg 'output', 'output dir', :alias => :o
       arg :name, 'user name', :alias => :n
       arg :help, 'show help', :alias => :h
 
-      filter :name do |v|
+      filter :name, :yakiniku do |v|
         v.downcase
       end
 
       validate :input, "input must be valid URL" do |v|
         v =~ /^https?:\/\/.+/
+      end
+
+      validate :depth, :pi, "depth, pi must be Number" do |v|
+        [Fixnum, Float].include? v.class
       end
     end
   end
@@ -51,6 +55,7 @@ class TestArgsParser < Test::Unit::TestCase
 
   def test_filter
     assert @parser[:name] == 'shokai'
+    assert @parser[:yakiniku] == 'kazusuke'
   end
 
   def test_missing_arg

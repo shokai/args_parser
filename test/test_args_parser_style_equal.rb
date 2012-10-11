@@ -2,14 +2,14 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestArgsParserStyleEqual < Test::Unit::TestCase
   def setup
-    @argv = 'test --input=http://shokai.org --a --o=./out -h --depth=-030 foo bar --pi=-3.140 --n=ShoKaI'.split(/\s+/)
+    @argv = 'test --input=http://shokai.org --a --o=./out -h -depth=-030 foo bar --pi=-3.140 --n=ShoKaI ---yakiniku=kAzuSUKE'.split(/\s+/)
     @parser = ArgsParser.parse @argv, :style => :equal do
       arg 'input', 'input', :alias => :i
       arg :output, 'output dir', :alias => :o
       arg :name, 'user name', :alias => :n
       arg :help, 'show help', :alias => :h
 
-      filter :name do |v|
+      filter :name, 'yakiniku' do |v|
         v.downcase
       end
 
@@ -51,6 +51,7 @@ class TestArgsParserStyleEqual < Test::Unit::TestCase
 
   def test_filter
     assert @parser[:name] == 'shokai'
+    assert @parser[:yakiniku] == 'kazusuke'
   end
 
   def test_missing_arg
