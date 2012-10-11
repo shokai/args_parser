@@ -5,7 +5,7 @@ class TestArgsParser < Test::Unit::TestCase
     @argv = 'test --input http://shokai.org -a --o ./out -h --depth 030 foo bar --pi 3.14 --n ShoKaI'.split(/\s+/)
     @parser = ArgsParser.parse @argv do
       arg :input, 'input', :alias => :i
-      arg :output, 'output dir', :alias => :o
+      arg 'output', 'output dir', :alias => :o
       arg :name, 'user name', :alias => :n
       arg :help, 'show help', :alias => :h
 
@@ -33,6 +33,10 @@ class TestArgsParser < Test::Unit::TestCase
 
   def test_alias
     assert @parser[:output] == './out'
+  end
+
+  def test_string_access
+    assert @parser['output'] == './out'
   end
 
   def test_cast_integer

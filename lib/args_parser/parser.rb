@@ -54,6 +54,7 @@ module ArgsParser
     end
 
     def arg(name, description, opts={})
+      name = name.to_sym
       params[name][:default] = opts[:default]
       params[name][:description] = description
       params[name][:index] = params.keys.size
@@ -114,11 +115,11 @@ module ArgsParser
     end
 
     def [](key)
-      params[key][:value] || params[key][:default]
+      params[key.to_sym][:value] || params[key.to_sym][:default]
     end
 
     def []=(key, value)
-      params[key][:value] = value
+      params[key.to_sym][:value] = value
     end
 
     def has_option?(*opt)
