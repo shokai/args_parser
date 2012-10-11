@@ -62,9 +62,12 @@ module ArgsParser
       aliases[opts[:alias]] = name if opts[:alias]
     end
 
-    def filter(name=nil, &block)
+    def filter(*names, &block)
       if block_given?
-        @filter.add name, block
+        names = [nil] if names.empty?
+        names.each do |name|
+          @filter.add name, block
+        end
       end
     end
 
@@ -76,9 +79,11 @@ module ArgsParser
       end
     end
 
-    def validate(name, message, &block)
+    def validate(*names, message, &block)
       if block_given?
-        @validator.add name, message, block
+        names.each do |name|
+          @validator.add name, message, block
+        end
       end
     end
 
