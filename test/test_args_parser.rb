@@ -64,13 +64,14 @@ class TestArgsParser < Test::Unit::TestCase
   def test_has_param?
     assert @parser.has_param? :input
     assert @parser.has_param? :output
+    assert @parser.has_param? 'output'
     assert @parser.has_param? :depth
     assert @parser.has_param? :pi
     assert @parser.has_param? :name
   end
 
   def test_has_params?
-    assert @parser.has_param? :input, :output, :depth, :pi, :name
+    assert @parser.has_param? :input, :output, 'depth', :pi, :name
   end
 
   def test_has_not_param?
@@ -78,12 +79,13 @@ class TestArgsParser < Test::Unit::TestCase
   end
 
   def test_has_option?
-    assert @parser.has_option? :help 
+    assert @parser.has_option? :help
+    assert @parser.has_option? 'help'
     assert @parser.has_option? :a
   end
 
   def test_has_options?
-    assert @parser.has_option? :help, :a
+    assert @parser.has_option? :help, 'a'
   end
 
   def test_has_not_option?
