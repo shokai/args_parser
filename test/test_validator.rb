@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/test_helper.rb'
+require File.expand_path 'test_helper', File.dirname(__FILE__)
 
-class TestArgsParserValidator < Test::Unit::TestCase
+class TestArgsParserValidator < MiniTest::Unit::TestCase
   def setup
     @argv = ['--url', 'hptt://shokai.org']
     @@err = nil

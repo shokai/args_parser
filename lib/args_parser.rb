@@ -8,7 +8,4 @@ require 'args_parser/error'
 require 'args_parser/filter'
 require 'args_parser/validator'
 require 'args_parser/config'
-
-module ArgsParser
-  VERSION = '0.1.2'
-end
+require 'args_parser/version'

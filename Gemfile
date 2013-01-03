@@ -1,4 +1,5 @@
-source :rubygems
+source 'https://rubygems.org'
 
-gem 'hoe', '>= 2.1.0'
-gem 'newgem'
+# Specify your gem's dependencies in args_parser.gemspec
+gemspec
+gem 'minitest'

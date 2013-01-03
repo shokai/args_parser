@@ -1,4 +1,6 @@
+require 'rubygems'
 require 'bundler/setup'
-require 'stringio'
-require 'test/unit'
-require File.dirname(__FILE__) + '/../lib/args_parser'
+require 'minitest/autorun'
+
+$:.unshift File.expand_path '../lib', File.dirname(__FILE__)
+require 'args_parser'
