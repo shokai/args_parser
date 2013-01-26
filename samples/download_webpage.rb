@@ -9,6 +9,7 @@ parser = ArgsParser.parse ARGV do
   arg :url, 'URL', :alias => :u
   arg :output, 'output file', :alias => :o, :default => 'out.html'
   arg :verbose, 'verbose mode'
+  arg :time, 'time', :default => lambda{ Time.now }
   arg :help, 'show help', :alias => :h
 
   filter :url do |v|
