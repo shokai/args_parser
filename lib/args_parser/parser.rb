@@ -53,6 +53,7 @@ module ArgsParser
       instance_eval(&block)
     end
 
+    private
     def arg(name, description, opts={})
       name = name.to_sym
       params[name][:default] = opts[:default]
@@ -90,6 +91,12 @@ module ArgsParser
       end
     end
 
+    def default(key)
+      d = params[key.to_sym][:default]
+      (d and d.kind_of? Proc) ? d.call : d
+    end
+
+    public
     def args
       params.keys
     end
@@ -115,7 +122,7 @@ module ArgsParser
     end
 
     def [](key)
-      params[key.to_sym][:value] || params[key.to_sym][:default]
+      params[key.to_sym][:value] or default(key)
     end
 
     def []=(key, value)
@@ -166,7 +173,7 @@ module ArgsParser
         line += " (-#{i[:alias]})" if i[:alias]
         line = line.ljust(len+2)
         line += i[:description].to_s
-        line += " : default - #{i[:default]}" if i[:default]
+        line += " : default - #{default i[:name]}" if i[:default]
         line
       }.join("\n")
     end
