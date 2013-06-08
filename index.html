@@ -17,7 +17,7 @@
     <div class="wrapper">
       <header>
         <h1 class="header">Args Parser</h1>
-        <p class="header">Parse ARGV from command line with DSL.</p>
+        <p class="header">Parse/Filter/Validate ARGV from command line with DSL.</p>
 
         <ul>
           <li class="download"><a class="buttons" href="https://github.com/shokai/args_parser/zipball/master">Download ZIP</a></li>
@@ -46,7 +46,7 @@
 <div class="highlight"><pre><span class="nb">require</span> <span class="s1">'rubygems'</span>
 <span class="nb">require</span> <span class="s1">'args_parser'</span>
 
-<span class="n">parser</span> <span class="o">=</span> <span class="no">ArgsParser</span><span class="o">.</span><span class="n">parse</span> <span class="no">ARGV</span> <span class="k">do</span>
+<span class="n">args</span> <span class="o">=</span> <span class="no">ArgsParser</span><span class="o">.</span><span class="n">parse</span> <span class="no">ARGV</span> <span class="k">do</span>
   <span class="n">arg</span> <span class="ss">:url</span><span class="p">,</span> <span class="s1">'URL'</span><span class="p">,</span> <span class="ss">:alias</span> <span class="o">=&gt;</span> <span class="ss">:u</span>
   <span class="n">arg</span> <span class="ss">:output</span><span class="p">,</span> <span class="s1">'output file'</span><span class="p">,</span> <span class="ss">:alias</span> <span class="o">=&gt;</span> <span class="ss">:o</span><span class="p">,</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="s1">'out.html'</span>
   <span class="n">arg</span> <span class="ss">:verbose</span><span class="p">,</span> <span class="s1">'verbose mode'</span>
@@ -61,17 +61,17 @@
   <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">has_option?</span> <span class="ss">:help</span> <span class="ow">or</span> <span class="o">!</span><span class="n">parser</span><span class="o">.</span><span class="n">has_param?</span><span class="p">(</span><span class="ss">:url</span><span class="p">,</span> <span class="ss">:output</span><span class="p">)</span>
-  <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="n">parser</span><span class="o">.</span><span class="n">help</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">has_option?</span> <span class="ss">:help</span> <span class="ow">or</span> <span class="o">!</span><span class="n">args</span><span class="o">.</span><span class="n">has_param?</span><span class="p">(</span><span class="ss">:url</span><span class="p">,</span> <span class="ss">:output</span><span class="p">)</span>
+  <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="n">args</span><span class="o">.</span><span class="n">help</span>
   <span class="nb">exit</span> <span class="mi">1</span>
 <span class="k">end</span>
 
 <span class="nb">require</span> <span class="s1">'open-uri'</span>
-<span class="nb">puts</span> <span class="s1">'download..'</span> <span class="k">if</span> <span class="n">parser</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span>
-<span class="nb">open</span><span class="p">(</span><span class="n">parser</span><span class="o">[</span><span class="ss">:output</span><span class="o">]</span><span class="p">,</span> <span class="s1">'w+'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
-  <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="nb">open</span><span class="p">(</span><span class="n">parser</span><span class="o">[</span><span class="ss">:url</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">read</span>
+<span class="nb">puts</span> <span class="s1">'download..'</span> <span class="k">if</span> <span class="n">args</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span>
+<span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="ss">:output</span><span class="o">]</span><span class="p">,</span> <span class="s1">'w+'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="ss">:url</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">read</span>
 <span class="k">end</span>
-<span class="nb">puts</span> <span class="s2">"saved! =&gt; </span><span class="si">#{</span><span class="n">parser</span><span class="o">[</span><span class="ss">:output</span><span class="o">]</span><span class="si">}</span><span class="s2">"</span>
+<span class="nb">puts</span> <span class="s2">"saved! =&gt; </span><span class="si">#{</span><span class="n">args</span><span class="o">[</span><span class="ss">:output</span><span class="o">]</span><span class="si">}</span><span class="s2">"</span>
 </pre></div>
 
 <h3>equal style</h3>
@@ -81,47 +81,12 @@
 
 <p>parse equal style ARGV</p>
 
-<div class="highlight"><pre><span class="n">parser</span> <span class="o">=</span> <span class="no">ArgsParser</span><span class="o">.</span><span class="n">parse</span> <span class="no">ARGV</span><span class="p">,</span> <span class="ss">:style</span> <span class="o">=&gt;</span> <span class="ss">:equal</span> <span class="k">do</span>
+<div class="highlight"><pre><span class="n">args</span> <span class="o">=</span> <span class="no">ArgsParser</span><span class="o">.</span><span class="n">parse</span> <span class="no">ARGV</span><span class="p">,</span> <span class="ss">:style</span> <span class="o">=&gt;</span> <span class="ss">:equal</span> <span class="k">do</span>
 </pre></div>
 
 <p>see more <a href="https://github.com/shokai/args_parser/tree/master/samples">samples</a></p>
 
-<h2>REQUIREMENTS:</h2>
 
-<ul>
-<li>Ruby 1.8.7+</li>
-<li>Ruby 1.9.3+</li>
-<li>JRuby 1.6.7+</li>
-</ul>
-<h2>TEST:</h2>
-
-<pre><code>% bundle install
-% rake test</code></pre>
-
-<h2>LICENSE:</h2>
-
-<p>(The MIT License)</p>
-
-<p>Copyright (c) 2012 Sho Hashimoto &lt;hashimoto@shokai.org&gt;</p>
-
-<p>Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:</p>
-
-<p>The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.</p>
-
-<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
