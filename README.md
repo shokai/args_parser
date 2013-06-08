@@ -7,9 +7,7 @@ args_parser
 
 Requirements
 ------------
-* Ruby 1.8.7+
-* Ruby 1.9.3+
-* JRuby 1.6.7+
+- Ruby 1.8.7 ~ 2.0.0
 
 
 Install
