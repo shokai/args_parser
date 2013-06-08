@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.version       = ArgsParser::VERSION
   gem.authors       = ["Sho Hashimoto"]
   gem.email         = ["hashimoto@shokai.org"]
-  gem.description   = %q{Parse ARGV from command line with DSL.}
+  gem.description   = %q{Parse/Filter/Validate ARGV from command line with DSL.}
   gem.summary       = gem.description
   gem.homepage      = "http://shokai.github.com/args_parser"
 
