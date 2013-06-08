@@ -1,6 +1,6 @@
 require File.expand_path 'test_helper', File.dirname(__FILE__)
 
-class TestArgsParserStyleEqual < MiniTest::Unit::TestCase
+class TestArgsParserStyleEqual < MiniTest::Test
   def setup
     @argv = 'test --input=http://shokai.org --a --o=./out -h --depth=-030 foo bar --pi=-3.140 --n=ShoKaI'.split(/\s+/)
     @parser = ArgsParser.parse @argv, :style => :equal do

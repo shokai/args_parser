@@ -1,6 +1,6 @@
 require File.expand_path 'test_helper', File.dirname(__FILE__)
 
-class TestArgsParserDefault < MiniTest::Unit::TestCase
+class TestArgsParserDefault < MiniTest::Test
   def setup
     @argv = ['--age', '40']
     @parser = ArgsParser.parse @argv do

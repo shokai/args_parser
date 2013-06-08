@@ -1,7 +1,7 @@
 require File.expand_path 'test_helper', File.dirname(__FILE__)
 require 'json'
 
-class TestArgsParserFilter < MiniTest::Unit::TestCase
+class TestArgsParserFilter < MiniTest::Test
   def setup
     @argv = ['--count', '35', '--data', '["say","hello"]']
     @@err = nil
