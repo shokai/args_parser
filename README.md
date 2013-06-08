@@ -29,7 +29,7 @@ parse ARGV
 require 'rubygems'
 require 'args_parser'
 
-parser = ArgsParser.parse ARGV do
+args = ArgsParser.parse ARGV do
   arg :url, 'URL', :alias => :u
   arg :output, 'output file', :alias => :o, :default => 'out.html'
   arg :verbose, 'verbose mode'
@@ -44,17 +44,17 @@ parser = ArgsParser.parse ARGV do
   end
 end
 
-if parser.has_option? :help or !parser.has_param?(:url, :output)
-  STDERR.puts parser.help
+if args.has_option? :help or !args.has_param?(:url, :output)
+  STDERR.puts args.help
   exit 1
 end
 
 require 'open-uri'
-puts 'download..' if parser[:verbose]
-open(parser[:output], 'w+') do |f|
-  f.write open(parser[:url]).read
+puts 'download..' if args[:verbose]
+open(args[:output], 'w+') do |f|
+  f.write open(args[:url]).read
 end
-puts "saved! => #{parser[:output]}"
+puts "saved! => #{args[:output]}"
 ```
 
 equal style
@@ -63,7 +63,7 @@ equal style
 
 parse equal style ARGV
 ```ruby
-parser = ArgsParser.parse ARGV, :style => :equal do
+args = ArgsArgs.parse ARGV, :style => :equal do
 ```
 
 see more samples https://github.com/shokai/args_parser/tree/master/samples

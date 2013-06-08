@@ -5,7 +5,7 @@ $:.unshift File.expand_path '../lib', File.dirname(__FILE__)
 require 'rubygems'
 require 'args_parser'
 
-parser = ArgsParser.parse ARGV do
+args = ArgsParser.parse ARGV do
   arg :url, 'URL', :alias => :u
   arg :output, 'output file', :alias => :o, :default => 'out.html'
   arg :verbose, 'verbose mode'
@@ -21,22 +21,22 @@ parser = ArgsParser.parse ARGV do
   end
 end
 
-if parser.has_option? :help or !parser.has_param?(:url, :output)
+if args.has_option? :help or !args.has_param?(:url, :output)
   STDERR.puts "Download WebPage\n=="
-  STDERR.puts parser.help
+  STDERR.puts args.help
   STDERR.puts "e.g.  ruby #{$0} -url http://example.com -o out.html"
   exit 1
 end
 
-p parser
+p args
 
 require 'open-uri'
 
-puts 'download..' if parser[:verbose]
-data = open(parser[:url]).read
-puts data if parser[:verbose]
+puts 'download..' if args[:verbose]
+data = open(args[:url]).read
+puts data if args[:verbose]
 
-open(parser[:output], 'w+') do |f|
+open(args[:output], 'w+') do |f|
   f.write data
 end
-puts "saved! => #{parser[:output]}"
+puts "saved! => #{args[:output]}"
