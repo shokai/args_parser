@@ -1,3 +1,7 @@
+=== 0.1.6 2013-06-08
+
+* fix gem description
+
 === 0.1.5 2013-06-08
 
 * bugfix Parser#has_param?

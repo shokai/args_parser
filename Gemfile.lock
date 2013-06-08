@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    args_parser (0.1.5)
+    args_parser (0.1.6)
 
 GEM
   remote: https://rubygems.org/
