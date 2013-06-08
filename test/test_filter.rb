@@ -29,7 +29,7 @@ class TestArgsParserFilter < MiniTest::Unit::TestCase
 
   def test_filter_error
     assert @parser.has_param? :data
-    assert !@parser.has_param?(:count)
+    assert @parser.has_param? :count
     assert_equal @@name, :count
     assert_equal @@value, '35'
     assert_equal @@err.class, NoMethodError

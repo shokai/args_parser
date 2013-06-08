@@ -138,7 +138,7 @@ module ArgsParser
     def has_param?(*param_)
       !(param_.flatten.map{|i|
           v = self[i]
-          (v and [String, Fixnum, Float].include? v.class) ? true : false
+          (v != nil and v != true) ? true : false
         }.include? false)
     end
 
