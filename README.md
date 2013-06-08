@@ -2,7 +2,7 @@ args_parser
 ===========
 
 * Parse ARGV from command line with DSL.
-* http://shokai.github.com/args_parser
+* http://shokai.github.io/args_parser
 
 
 Requirements
