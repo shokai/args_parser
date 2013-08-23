@@ -1,8 +1,11 @@
 
 module ArgsParser
   class Validator
-    def validators
-      @validators ||= []
+
+    attr_reader :validators
+
+    def initialize
+      @validators = []
     end
 
     def add(name, message, validator)
