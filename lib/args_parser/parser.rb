@@ -1,7 +1,6 @@
-
 module ArgsParser
   def self.parse(argv=[], config={}, &block)
-    Config.default.each do |k,v|
+    Config::DEFAULT.each do |k,v|
       config[k] = v unless config[k]
     end
     parser = Parser.new(config, &block)

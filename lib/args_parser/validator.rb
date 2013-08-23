@@ -1,4 +1,3 @@
-
 module ArgsParser
   class Validator
 
