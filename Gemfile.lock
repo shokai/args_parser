@@ -8,8 +8,8 @@ GEM
   specs:
     json (1.8.0)
     json (1.8.0-java)
-    minitest (5.0.4)
-    rake (10.0.4)
+    minitest (5.0.6)
+    rake (10.1.0)
 
 PLATFORMS
   java
