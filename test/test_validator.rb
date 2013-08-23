@@ -12,7 +12,7 @@ class TestArgsParserValidator < MiniTest::Test
       validate :url, 'invalid URL' do |v|
         v =~ Regexp.new("^https?://.+$")
       end
-      
+
       on_validate_error do |err, name, value|
         @@err = err
         @@name = name

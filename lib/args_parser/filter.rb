@@ -1,8 +1,10 @@
-
 module ArgsParser
   class Filter
-    def filters
-      @filters ||= []
+
+    attr_reader :filters
+
+    def initialize
+      @filters = []
     end
 
     def add(name, filter)

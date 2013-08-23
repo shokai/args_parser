@@ -1,9 +1,9 @@
 module ArgsParser
   class Config
-    def self.default
-      {
-        :style => :default
-      }
-    end
+
+    DEFAULT = {
+      :style => :default
+    }
+
   end
 end

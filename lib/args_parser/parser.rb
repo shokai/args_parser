@@ -1,13 +1,4 @@
-
 module ArgsParser
-  def self.parse(argv=[], config={}, &block)
-    Config.default.each do |k,v|
-      config[k] = v unless config[k]
-    end
-    parser = Parser.new(config, &block)
-    parser.parse argv
-    parser
-  end
 
   class Parser
     attr_reader :argv, :params, :aliases
@@ -18,9 +9,8 @@ module ArgsParser
     end
 
     def initialize(config, &block)
-      unless block_given?
-        raise ArgumentError, 'initialize block was not given'
-      end
+      raise ArgumentError, 'initialize block was not given' unless block_given?
+
       @config = config
       @argv = []
       @params = Hash.new{|h,k|
@@ -50,7 +40,7 @@ module ArgsParser
         exit 1
       end
 
-      instance_eval(&block)
+      instance_eval &block
     end
 
     private
@@ -64,36 +54,32 @@ module ArgsParser
     end
 
     def filter(name=nil, &block)
-      if block_given?
-        @filter.add name, block
-      end
+      @filter.add name, block if block_given?
     end
 
     def on_filter_error(err=nil, name=nil, value=nil, &block)
       if block_given?
         @on_filter_error = block
-      else
-        @on_filter_error.call(err, name, value) if @on_filter_error
+      elsif @on_filter_error.kind_of? Proc
+        @on_filter_error.call(err, name, value)
       end
     end
 
     def validate(name, message, &block)
-      if block_given?
-        @validator.add name, message, block
-      end
+      @validator.add name, message, block if block_given?
     end
 
     def on_validate_error(err=nil, name=nil, value=nil, &block)
       if block_given?
         @on_validate_error = block
-      else
-        @on_validate_error.call(err, name, value) if @on_validate_error
+      elsif @on_validate_error.kind_of? Proc
+        @on_validate_error.call(err, name, value)
       end
     end
 
     def default(key)
       d = params[key.to_sym][:default]
-      (d and d.kind_of? Proc) ? d.call : d
+      d.kind_of?(Proc) ? d.call : d
     end
 
     public
@@ -102,7 +88,7 @@ module ArgsParser
     end
 
     def parse(argv)
-      method("parse_style_#{@config[:style]}".to_sym).call(argv)
+      send "parse_style_#{@config[:style]}", argv
       params.each do |name, param|
         next if [nil, true].include? param[:value]
         begin
@@ -122,24 +108,19 @@ module ArgsParser
     end
 
     def [](key)
-      params[key.to_sym][:value] or default(key)
+      params[key.to_sym][:value] || default(key)
     end
 
     def []=(key, value)
       params[key.to_sym][:value] = value
     end
 
-    def has_option?(*opt)
-      !(opt.flatten.map{|i|
-          self[i] == true
-        }.include? false)
+    def has_option?(*opts)
+      !opts.flatten.find{|i| self[i] != true}
     end
 
-    def has_param?(*param_)
-      !(param_.flatten.map{|i|
-          v = self[i]
-          (v != nil and v != true) ? true : false
-        }.include? false)
+    def has_param?(*params)
+      !params.flatten.find{|i| self[i] == nil or self[i] == true }
     end
 
     def inspect
@@ -154,24 +135,20 @@ module ArgsParser
       params_ = Array.new
       params.each do |k,v|
         v[:name] = k
-        params_ << v
+        params_.push v
       end
-      params_ = params_.delete_if{|i|
-        i[:index] < 0
-      }.sort{|a,b|
-        a[:index] <=> b[:index]
-      }
+      params_ = params_.delete_if{|i| i[:index] < 0 }.sort{|a,b| a[:index] <=> b[:index] }
 
       len = params_.map{|i|
-        line = " -#{i[:name]}"
-        line += " (-#{i[:alias]})" if i[:alias]
-        line.size
+        (i[:alias] ?
+         " -#{i[:name]} (-#{i[:alias]})" :
+         " -#{i[:name]}").size
       }.max
 
       "options:\n" + params_.map{|i|
-        line = " -#{i[:name]}"
-        line += " (-#{i[:alias]})" if i[:alias]
-        line = line.ljust(len+2)
+        line = (i[:alias] ?
+                " -#{i[:name]} (-#{i[:alias]})" :
+                " -#{i[:name]}").ljust(len+2)
         line += i[:description].to_s
         line += " : default - #{default i[:name]}" if i[:default]
         line
