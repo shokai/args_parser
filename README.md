@@ -72,7 +72,7 @@ Test
 
     % gem install bundler
     % bundle install
-    % rake test
+    % bundle exec rake test
 
 
 Contributing
