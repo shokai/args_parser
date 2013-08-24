@@ -54,9 +54,7 @@ module ArgsParser
     end
 
     def filter(name=nil, &block)
-      if block_given?
-        @filter.add name, block
-      end
+      @filter.add name, block if block_given?
     end
 
     def on_filter_error(err=nil, name=nil, value=nil, &block)
@@ -68,9 +66,7 @@ module ArgsParser
     end
 
     def validate(name, message, &block)
-      if block_given?
-        @validator.add name, message, block
-      end
+      @validator.add name, message, block if block_given?
     end
 
     def on_validate_error(err=nil, name=nil, value=nil, &block)
@@ -112,7 +108,7 @@ module ArgsParser
     end
 
     def [](key)
-      params[key.to_sym][:value] or default(key)
+      params[key.to_sym][:value] || default(key)
     end
 
     def []=(key, value)
@@ -139,24 +135,20 @@ module ArgsParser
       params_ = Array.new
       params.each do |k,v|
         v[:name] = k
-        params_ << v
+        params_.push v
       end
-      params_ = params_.delete_if{|i|
-        i[:index] < 0
-      }.sort{|a,b|
-        a[:index] <=> b[:index]
-      }
+      params_ = params_.delete_if{|i| i[:index] < 0 }.sort{|a,b| a[:index] <=> b[:index] }
 
       len = params_.map{|i|
-        line = " -#{i[:name]}"
-        line += " (-#{i[:alias]})" if i[:alias]
-        line.size
+        (i[:alias] ?
+         " -#{i[:name]} (-#{i[:alias]})" :
+         " -#{i[:name]}").size
       }.max
 
       "options:\n" + params_.map{|i|
-        line = " -#{i[:name]}"
-        line += " (-#{i[:alias]})" if i[:alias]
-        line = line.ljust(len+2)
+        line = (i[:alias] ?
+                " -#{i[:name]} (-#{i[:alias]})" :
+                " -#{i[:name]}").ljust(len+2)
         line += i[:description].to_s
         line += " : default - #{default i[:name]}" if i[:default]
         line
