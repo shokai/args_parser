@@ -40,7 +40,7 @@ module ArgsParser
         exit 1
       end
 
-      instance_eval(&block)
+      instance_eval &block
     end
 
     private

@@ -11,7 +11,7 @@ module ArgsParser
             k = arg.scan(is_key)[0][0].strip.to_sym
             k = aliases[k]  if aliases[k]
           else
-            self.argv.push arg
+            @argv.push arg
           end
         else
           if arg =~ is_key
