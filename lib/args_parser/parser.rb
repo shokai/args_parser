@@ -60,8 +60,8 @@ module ArgsParser
     def on_filter_error(err=nil, name=nil, value=nil, &block)
       if block_given?
         @on_filter_error = block
-      else
-        @on_filter_error.call(err, name, value) if @on_filter_error
+      elsif @on_filter_error.kind_of? Proc
+        @on_filter_error.call(err, name, value)
       end
     end
 
@@ -72,8 +72,8 @@ module ArgsParser
     def on_validate_error(err=nil, name=nil, value=nil, &block)
       if block_given?
         @on_validate_error = block
-      else
-        @on_validate_error.call(err, name, value) if @on_validate_error
+      elsif @on_validate_error.kind_of? Proc
+        @on_validate_error.call(err, name, value)
       end
     end
 
