@@ -9,9 +9,8 @@ module ArgsParser
     end
 
     def initialize(config, &block)
-      unless block_given?
-        raise ArgumentError, 'initialize block was not given'
-      end
+      raise ArgumentError, 'initialize block was not given' unless block_given?
+
       @config = config
       @argv = []
       @params = Hash.new{|h,k|
@@ -84,7 +83,7 @@ module ArgsParser
 
     def default(key)
       d = params[key.to_sym][:default]
-      (d and d.kind_of? Proc) ? d.call : d
+      d.kind_of?(Proc) ? d.call : d
     end
 
     public
@@ -93,7 +92,7 @@ module ArgsParser
     end
 
     def parse(argv)
-      method("parse_style_#{@config[:style]}".to_sym).call(argv)
+      send "parse_style_#{@config[:style]}", argv
       params.each do |name, param|
         next if [nil, true].include? param[:value]
         begin
@@ -120,17 +119,12 @@ module ArgsParser
       params[key.to_sym][:value] = value
     end
 
-    def has_option?(*opt)
-      !(opt.flatten.map{|i|
-          self[i] == true
-        }.include? false)
+    def has_option?(*opts)
+      !opts.flatten.find{|i| self[i] != true}
     end
 
-    def has_param?(*param_)
-      !(param_.flatten.map{|i|
-          v = self[i]
-          (v != nil and v != true) ? true : false
-        }.include? false)
+    def has_param?(*params)
+      !params.flatten.find{|i| self[i] == nil or self[i] == true }
     end
 
     def inspect
