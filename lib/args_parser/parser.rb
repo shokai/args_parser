@@ -137,7 +137,7 @@ module ArgsParser
         v[:name] = k
         params_.push v
       end
-      params_ = params_.delete_if{|i| i[:index] < 0 }.sort{|a,b| a[:index] <=> b[:index] }
+      params_ = params_.reject{|i| i[:index] < 0 }.sort{|a,b| a[:index] <=> b[:index] }
 
       len = params_.map{|i|
         (i[:alias] ?
