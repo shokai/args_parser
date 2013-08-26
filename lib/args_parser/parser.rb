@@ -118,7 +118,7 @@ module ArgsParser
         end
       end
       params.keys.each do |name|
-        on name
+        on name if has_option? name or has_param? name
       end
     end
 
