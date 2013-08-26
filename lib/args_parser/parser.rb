@@ -84,7 +84,7 @@ module ArgsParser
         @ons.push :name => name, :callback => block
       else
         @ons.each do |event|
-          event[:callback].call(name, params[name]) if event[:name] == name
+          event[:callback].call(self[name]) if event[:name] == name
         end
       end
     end
