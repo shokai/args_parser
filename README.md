@@ -55,9 +55,10 @@ end
 puts "saved! => #{args[:output]}"
 ```
 
-equal style
+### equal style
 
-    % ruby samples/twitter_timeline.rb --user=shokai --fav --rt
+    % ruby samples/equal_style.rb --help
+    % ruby samples/equal_style.rb --user=shokai hello world  --a=1234
 
 parse equal style ARGV
 ```ruby
