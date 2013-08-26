@@ -11,11 +11,11 @@ class TestArgsParserDefault < MiniTest::Test
   end
 
   def test_default
-    assert @parser[:name] == 'shokai'
+    assert_equal @parser[:name], 'shokai'
   end
 
   def test_overwrite
-    assert @parser[:age] == 40
+    assert_equal @parser[:age], 40
   end
 
   def test_name

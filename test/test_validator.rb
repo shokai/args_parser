@@ -22,8 +22,8 @@ class TestArgsParserValidator < MiniTest::Test
   end
 
   def test_validate_error
-    assert @@name == :url
-    assert @@value == 'hptt://shokai.org'
-    assert @@err.class == ArgsParser::ValidationError
+    assert_equal @@name, :url
+    assert_equal @@value, 'hptt://shokai.org'
+    assert_equal @@err.class, ArgsParser::ValidationError
   end
 end

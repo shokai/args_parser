@@ -20,45 +20,45 @@ class TestArgsParser < MiniTest::Test
   end
 
   def test_first
-    assert @parser.first == 'test'
+    assert_equal @parser.first, 'test'
   end
 
   def test_argv
-    assert @parser.argv == ['test', 'foo', 'bar']
+    assert_equal @parser.argv, ['test', 'foo', 'bar']
   end
 
   def test_arg
-    assert @parser[:input] == 'http://shokai.org'
+    assert_equal @parser[:input], 'http://shokai.org'
   end
 
   def test_alias
-    assert @parser[:output] == './out'
+    assert_equal @parser[:output], './out'
   end
 
   def test_string_access
-    assert @parser['output'] == './out'
+    assert_equal @parser['output'], './out'
   end
 
   def test_cast_integer
-    assert @parser[:depth] == 30
-    assert @parser[:depth].class == Fixnum
+    assert_equal @parser[:depth], 30
+    assert_equal @parser[:depth].class, Fixnum
   end
 
   def test_cast_float
-    assert @parser[:pi] == 3.14
-    assert @parser[:pi].class == Float
+    assert_equal @parser[:pi], 3.14
+    assert_equal @parser[:pi].class, Float
   end
 
   def test_filter
-    assert @parser[:name] == 'shokai'
+    assert_equal @parser[:name], 'shokai'
   end
 
   def test_missing_arg
-    assert @parser[:b] != true
+    assert_equal @parser[:b], nil
   end
 
   def test_switch
-    assert @parser[:help] == true
+    assert_equal @parser[:help], true
   end
 
   def test_has_param?
