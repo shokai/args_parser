@@ -1,3 +1,10 @@
+=== 0.2.0 2013-08-26
+
+* add "on" event
+* fix equal_style sample
+* refactoring
+* specify license in gemspec
+
 === 0.1.6 2013-06-08
 
 * fix gem description
