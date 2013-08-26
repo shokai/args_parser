@@ -25,6 +25,7 @@ module ArgsParser
       @aliases = {}
       @filter = Filter.new
       @validator = Validator.new
+      @ons = []
 
       filter do |v|
         (v.kind_of? String and v =~ /^-?\d+$/) ? v.to_i : v
@@ -77,6 +78,17 @@ module ArgsParser
       end
     end
 
+    def on(name, &block)
+      name = name.to_sym
+      if block_given?
+        @ons.push :name => name, :callback => block
+      else
+        @ons.each do |event|
+          event[:callback].call(name, params[name]) if event[:name] == name
+        end
+      end
+    end
+
     def default(key)
       d = params[key.to_sym][:default]
       d.kind_of?(Proc) ? d.call : d
@@ -104,6 +116,9 @@ module ArgsParser
         if msg
           on_validate_error ValidationError.new(msg), name, param[:value]
         end
+      end
+      params.keys.each do |name|
+        on name
       end
     end
 
