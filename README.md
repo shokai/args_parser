@@ -4,6 +4,8 @@ args_parser
 * Parse/Filter/Validate ARGV from command line with DSL.
 * http://shokai.github.io/args_parser
 
+![Travis-CI build status](https://travis-ci.org/shokai/args_parser.png)
+
 
 Requirements
 ------------
